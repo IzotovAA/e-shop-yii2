@@ -1,3 +1,19 @@
+## Требования к ПО
+
+Должны быть установленны docker и docker compose
+
+## Установка проекта
+
+1) Клонировать репозиторий на локальную машину
+2) Перейти в папку проекта
+3) Скопировать .env-dist в .env
+4) Инициализировать проект командой в консоли: docker compose run --rm php-dev init
+5) Настроить подключение к БД в файле common/config/main-local.php
+6) Накатить миграции и заполнить БД начальными данными командой: docker compose run --rm php-dev yii db/init
+7) Если начальные данные не нужны, то накатить миграции командами:
+   docker compose run --rm php-dev yii migrate
+   docker compose run --rm php-dev yii migrate --migrationPath=@yii/rbac/migrations
+
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="https://avatars0.githubusercontent.com/u/993323" height="100px">
@@ -58,3 +74,4 @@ frontend
 vendor/                  contains dependent 3rd-party packages
 environments/            contains environment-based overrides
 ```
+
