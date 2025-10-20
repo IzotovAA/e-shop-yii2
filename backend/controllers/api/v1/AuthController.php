@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace backend\controllers\api\v1;
 
 use backend\requests\auth\LoginRequest;
 use backend\requests\auth\PasswordResetLinkRequest;
+use backend\requests\auth\RegisterSellerDataRequest;
 use backend\requests\auth\ResendVerificationEmailRequest;
 use backend\requests\auth\ResetPasswordRequest;
 use backend\requests\auth\SignupRequest;
@@ -57,6 +60,7 @@ class AuthController extends ActiveController
                     'login',
                     'error',
                     'signup',
+                    'register-seller-data',
                     'resend-verification-email',
                     'verify-email',
                     'request-password-reset',
@@ -74,6 +78,7 @@ class AuthController extends ActiveController
                             'login',
                             'error',
                             'signup',
+                            'register-seller-data',
                             'resend-verification-email',
                             'verify-email',
                             'request-password-reset',
@@ -95,6 +100,7 @@ class AuthController extends ActiveController
                     'logout' => ['post'],
                     'login' => ['post'],
                     'signup' => ['post'],
+                    'register-seller-data' => ['post'],
                     'resend-verification-email' => ['post'],
                     'verify-email' => ['get'],
                     'request-password-reset' => ['post'],
@@ -127,6 +133,7 @@ class AuthController extends ActiveController
         Yii::$container->set('backend\requests\auth\ResendVerificationEmailRequest');
         Yii::$container->set('backend\requests\auth\PasswordResetLinkRequest');
         Yii::$container->set('backend\requests\auth\ResetPasswordRequest');
+        Yii::$container->set('backend\requests\auth\RegisterSellerDataRequest');
     }
 
     /**
@@ -189,6 +196,20 @@ class AuthController extends ActiveController
         $data = $this->authService->getPostData($request);
 
         return $this->asJson($signupRequest->signup($data));
+    }
+
+    /**
+     * @throws \yii\base\Exception
+     * @throws BadRequestHttpException
+     */
+    public function actionRegisterSellerData(
+        Request                   $request,
+        RegisterSellerDataRequest $registerSellerInfoRequest
+    ): Response
+    {
+        $data = $this->authService->getPostData($request);
+
+        return $this->asJson($registerSellerInfoRequest->register($data));
     }
 
     /**

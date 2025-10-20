@@ -43,6 +43,15 @@ return [
             'errorAction' => 'home/error',
         ],
 
+//        'controllerMap' => [
+//
+//            'fixture' => [
+//                'class' => 'yii\faker\FixtureController',
+//                'templatePath' => '@common/tests/templates/fixtures',
+//                'fixtureDataPath' => '@common/tests/fixtures/data',
+//            ],
+//        ],
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -60,11 +69,11 @@ return [
                 'api/v1/login' => 'api/v1/auth/login',
                 'api/v1/logout' => 'api/v1/auth/logout',
                 'api/v1/signup' => 'api/v1/auth/signup',
+                'api/v1/register-seller-data' => 'api/v1/auth/register-seller-data',
                 'api/v1/verify-email' => 'api/v1/auth/verify-email',
                 'api/v1/resend-verification-email' => 'api/v1/auth/resend-verification-email',
                 'api/v1/request-password-reset' => 'api/v1/auth/request-password-reset',
                 'api/v1/reset-password' => 'api/v1/auth/reset-password',
-
 
 
 //                'posts' => 'post/index',

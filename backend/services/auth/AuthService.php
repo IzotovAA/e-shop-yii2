@@ -58,6 +58,10 @@ class AuthService
             return ['message' => 'Your email is already verified.'];
         }
 
+        if ($user->getRole()->one()->name === 'seller' && !$user->getSeller()->one()) {
+            return ['message' => 'Your should register detail seller data before email verification.'];
+        }
+
         $user->status = User::STATUS_ACTIVE;
         $user->save(false);
 

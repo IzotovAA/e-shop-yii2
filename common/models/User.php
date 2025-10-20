@@ -2,9 +2,12 @@
 
 namespace common\models;
 
+use backend\models\Role;
+use backend\models\Seller;
 use Yii;
 use yii\base\Exception;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -13,6 +16,7 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property string $username
+ * @property integer $role_id
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $verification_token
@@ -73,8 +77,6 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null): ?IdentityInterface
     {
-//        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-
         $user = User::findOne(['auth_key' => $token]);
 
         if ($user && $user->getAuthKeyExpireTimestamp() < time()) {
@@ -229,5 +231,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken(): void
     {
         $this->password_reset_token = null;
+    }
+
+    public function getSeller(): ActiveQuery
+    {
+        return $this->hasOne(Seller::class, ['user_id' => 'id']);
+    }
+
+    public function getRole(): ActiveQuery
+    {
+        return $this->hasOne(Role::class, ['id' => 'role_id']);
     }
 }
