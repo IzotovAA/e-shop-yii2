@@ -11,6 +11,7 @@ use backend\requests\auth\ResendVerificationEmailRequest;
 use backend\requests\auth\ResetPasswordRequest;
 use backend\requests\auth\SignupRequest;
 use backend\services\auth\AuthService;
+use common\RateLimiter\IpRateLimiter;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
 use Yii;
 use yii\base\Module;
@@ -19,17 +20,20 @@ use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
-use yii\rest\ActiveController;
+use yii\rest\Controller;
 use yii\web\BadRequestHttpException;
 use yii\web\Request;
 use yii\web\Response;
 
+//use yii\rest\ActiveController;
+
 /**
  * Auth controller
  */
-class AuthController extends ActiveController
+//class AuthController extends ActiveController
+class AuthController extends Controller
 {
-    public $modelClass = 'app\common\models\User';
+//    public string $modelClass = 'app\common\models\User';
 
     public function __construct(
         string                       $id,
@@ -107,10 +111,25 @@ class AuthController extends ActiveController
                     'reset-password' => ['post'],
                 ],
             ],
-//            'rateLimiter' => [
-//                'class' => RateLimiter::class,
-//                'enableRateLimitHeaders' => true,
-//            ],
+            'rateLimiter' => [
+                'class' => IpRateLimiter::class,
+                // The maximum number of allowed requests
+                'rateLimit' => 5,
+
+                // The time period for the rates to apply to
+                'timePeriod' => 60,
+
+                // Separate rate limiting for guests and authenticated users
+                // Defaults to true
+                // - false: use one set of rates, whether you are authenticated or not
+                // - true: use separate rates for guests and authenticated users
+//                'separateRates' => false,
+
+                // Whether to return HTTP headers containing the current rate limiting information
+                'enableRateLimitHeaders' => false,
+
+//                'only' => ['login', 'error', 'index'],
+            ],
         ];
     }
 

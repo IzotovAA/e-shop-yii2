@@ -1,4 +1,7 @@
 <?php
+
+use yii\caching\FileCache;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -92,6 +95,20 @@ return [
 //            'timeFormat' => 'php:H:i:s',
 //            'defaultTimeZone' => 'Europe/Moscow',
             'timeZone' => 'Europe/Moscow',
+        ],
+//        'rateLimiter' => [
+//            'class' => RateLimiter::class,
+//            'enableRateLimitHeaders' => true,
+//            'rules' => [
+//                'actions' => ['login', 'register'],
+//                'allow' => true,
+//                'rateLimit' => 1, // количество запросов'rateLimitInterval' => 60, // промежуток времени в секундах
+//            ],
+//        ],
+        'cache' => [
+            'class' => FileCache::class,
+            // Дополнительные настройки, например:
+            'cachePath' => '@app/runtime/cache',
         ],
     ],
     'params' => $params,
