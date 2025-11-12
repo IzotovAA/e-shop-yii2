@@ -46,27 +46,13 @@ return [
             'errorAction' => 'home/error',
         ],
 
-//        'controllerMap' => [
-//
-//            'fixture' => [
-//                'class' => 'yii\faker\FixtureController',
-//                'templatePath' => '@common/tests/templates/fixtures',
-//                'fixtureDataPath' => '@common/tests/fixtures/data',
-//            ],
-//        ],
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-//                ['class' => 'yii\rest\UrlRule', 'controller' => 'api/v1/auth'],
+//                ['class' => 'yii\rest\UrlRule', 'controller' => 'controllers/api/v1/AuthController'],
 
                 '' => 'home/index',
-//                'users/init' => 'home/users-init',
-//                'login' => 'home/login',
-//                'admin' => 'home/admin',
-//                'seller' => 'home/seller',
-//                'create/product' => 'home/create-product',
 
                 'api/v1' => 'api/v1/auth/index',
                 'api/v1/login' => 'api/v1/auth/login',
@@ -78,14 +64,11 @@ return [
                 'api/v1/request-password-reset' => 'api/v1/auth/request-password-reset',
                 'api/v1/reset-password' => 'api/v1/auth/reset-password',
 
-
 //                'posts' => 'post/index',
 //                'post/<id:\d+>' => 'post/view',
 //                'pattern' => 'posts',
 //                'route' => 'post/index',
 //                'suffix' => '.json',
-
-
             ],
         ],
         'formatter' => [
@@ -96,15 +79,6 @@ return [
 //            'defaultTimeZone' => 'Europe/Moscow',
             'timeZone' => 'Europe/Moscow',
         ],
-//        'rateLimiter' => [
-//            'class' => RateLimiter::class,
-//            'enableRateLimitHeaders' => true,
-//            'rules' => [
-//                'actions' => ['login', 'register'],
-//                'allow' => true,
-//                'rateLimit' => 1, // количество запросов'rateLimitInterval' => 60, // промежуток времени в секундах
-//            ],
-//        ],
         'cache' => [
             'class' => FileCache::class,
             // Дополнительные настройки, например:

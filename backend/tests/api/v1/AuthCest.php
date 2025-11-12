@@ -10,8 +10,6 @@ use common\models\User;
 use Yii;
 use yii\db\Exception;
 
-//use yii\test\InitDbFixture;
-
 /**
  * Class LoginCest
  */
@@ -33,21 +31,10 @@ class AuthCest
     public function _fixtures(): array
     {
         return [
-//            'init' => [
-//                'class' => InitDbFixture::class,
-//            ],
             'user' => [
                 'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user_data.php'
             ],
-//            'role' => [
-//                'class' => RoleFixture::class,
-//                'dataFile' => codecept_data_dir() . 'role_data.php'
-//            ],
-//            'auth_item' => [
-//                'class' => AuthItemFixture::class,
-//                'dataFile' => codecept_data_dir() . 'auth_item_data.php'
-//            ],
         ];
     }
 
@@ -274,7 +261,8 @@ class AuthCest
 
     public function userCanLoginWithValidCredentials(ApiTester $I): void
     {
-        $I->sendPost('/api/v1/login', ['username' => 'testuser', 'password' => 'password_0']);
+        $user = User::findOne(1);
+        $I->sendPost('/api/v1/login', ['username' => $user->username, 'password' => 'password_0']);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $user = Yii::$app->user->identity;
@@ -285,7 +273,8 @@ class AuthCest
 
     public function userCanNotLoginWithInvalidCredentials(ApiTester $I): void
     {
-        $I->sendPost('/api/v1/login', ['username' => 'testuser', 'password' => 'wrong_password']);
+        $user = User::findOne(1);
+        $I->sendPost('/api/v1/login', ['username' => $user->username, 'password' => 'wrong_password']);
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson($this->getExpectedFailureLoginResponseJson());

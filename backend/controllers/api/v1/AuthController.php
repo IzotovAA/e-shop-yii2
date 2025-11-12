@@ -22,22 +22,16 @@ use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\rest\Controller;
 use yii\web\BadRequestHttpException;
-use yii\web\ErrorAction;
 use yii\web\Request;
 use yii\web\Response;
-
-//use yii\rest\ActiveController;
 
 /**
  * Auth controller
  */
-//class AuthController extends ActiveController
 class AuthController extends Controller
 {
-//    public string $modelClass = 'app\common\models\User';
-
-    private static int $rateLimit = 1;
-    private static int $timePeriod = 10;
+    private static int $rateLimit = 2;
+    private static int $timePeriod = 1;
 
     public function __construct(
         string                       $id,
@@ -131,34 +125,9 @@ class AuthController extends Controller
             ],
             'rateLimiter' => [
                 'class' => IpRateLimiter::class,
-                // The maximum number of allowed requests
                 'rateLimit' => self::$rateLimit,
-
-                // The time period for the rates to apply to
                 'timePeriod' => self::$timePeriod,
-
-                // Separate rate limiting for guests and authenticated users
-                // Defaults to true
-                // - false: use one set of rates, whether you are authenticated or not
-                // - true: use separate rates for guests and authenticated users
-//                'separateRates' => false,
-
-                // Whether to return HTTP headers containing the current rate limiting information
                 'enableRateLimitHeaders' => false,
-
-//                'only' => ['login', 'error', 'index'],
-            ],
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function actions(): array
-    {
-        return [
-            'error' => [
-                'class' => ErrorAction::class,
             ],
         ];
     }

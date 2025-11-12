@@ -4,7 +4,7 @@ namespace common\tests\unit\models;
 
 use Yii;
 use common\models\LoginForm;
-use common\fixtures\RoleFixture;
+use common\fixtures\UserFixture;
 
 /**
  * Login form test
@@ -24,7 +24,7 @@ class LoginFormTest extends \Codeception\Test\Unit
     {
         return [
             'user' => [
-                'class' => RoleFixture::class,
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php'
             ]
         ];
