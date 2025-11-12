@@ -4,6 +4,7 @@ namespace backend\requests\auth;
 
 use backend\models\Seller;
 use common\models\User;
+use Yii;
 use yii\base\Exception;
 use yii\base\Model;
 
@@ -96,6 +97,8 @@ class RegisterSellerDataRequest extends Model
      */
     public function register(array $data): array
     {
+        Yii::$app->response->statusCode = 400;
+
         if (!$this->load($data, '') || !$this->validate()) {
             return ['errors' => $this->errors];
         }
@@ -114,6 +117,8 @@ class RegisterSellerDataRequest extends Model
         $seller->inn = $this->inn;
         $seller->ogrn = $this->ogrn;
         $seller->save();
+
+        Yii::$app->response->statusCode = 201;
 
         return ['message' => 'Successful registered seller data.'];
     }

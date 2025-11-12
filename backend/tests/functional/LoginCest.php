@@ -3,7 +3,7 @@
 namespace backend\tests\functional;
 
 use backend\tests\FunctionalTester;
-use common\fixtures\UserFixture;
+use common\fixtures\RoleFixture;
 
 /**
  * Class LoginCest
@@ -21,7 +21,7 @@ class LoginCest
     {
         return [
             'user' => [
-                'class' => UserFixture::class,
+                'class' => RoleFixture::class,
                 'dataFile' => codecept_data_dir() . 'login_data.php'
             ]
         ];
@@ -30,7 +30,7 @@ class LoginCest
     /**
      * @param FunctionalTester $I
      */
-    public function loginUser(FunctionalTester $I)
+    public function loginUser(FunctionalTester $I): void
     {
         $I->amOnRoute('/site/login');
         $I->fillField('Username', 'erau');

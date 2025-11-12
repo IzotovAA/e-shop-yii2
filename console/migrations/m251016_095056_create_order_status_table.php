@@ -14,7 +14,7 @@ class m251016_095056_create_order_status_table extends Migration
     {
         $this->createTable('{{%order_status}}', [
             'id' => $this->primaryKey()->unsigned(),
-            'status_name' => $this->string()->notNull()->unique(),
+            'status_name' => $this->string()->unique()->notNull(),
             'created_at' => $this->integer()->unsigned()->notNull(),
             'updated_at' => $this->integer()->unsigned()->notNull(),
         ]);

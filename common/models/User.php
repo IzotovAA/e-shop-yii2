@@ -29,7 +29,6 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property string $password write-only password
  */
-//class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 class User extends ActiveRecord implements IdentityInterface, IpRateLimitInterface
 {
     const int STATUS_DELETED = 0;

@@ -52,6 +52,7 @@ class SignupRequest extends Model
     public function signup(array $data): array
     {
         if (!$this->load($data, '') || !$this->validate()) {
+            Yii::$app->response->statusCode = 400;
             return ['errors' => $this->errors];
         }
 
@@ -65,6 +66,8 @@ class SignupRequest extends Model
         $user->save();
         $auth->assign($auth->getRole($user->getRole()->one()->name), $user->id);
         $this->sendEmail($user);
+
+        Yii::$app->response->statusCode = 201;
 
         return ['message' => 'Successful signed up, check your email for further instructions.'];
     }

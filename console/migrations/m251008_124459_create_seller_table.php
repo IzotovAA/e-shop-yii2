@@ -14,8 +14,8 @@ class m251008_124459_create_seller_table extends Migration
     {
         $this->createTable('{{%seller}}', [
             'id' => $this->primaryKey()->unsigned(),
-            'user_id' => $this->integer()->unsigned()->notNull(),
-            'shop_name' => $this->string()->notNull(),
+            'user_id' => $this->integer()->unsigned()->unique()->notNull(),
+            'shop_name' => $this->string()->unique()->notNull(),
             'legal_address' => $this->string()->notNull(),
             'physical_address' => $this->string()->notNull(),
             'inn' => $this->string(31)->unique()->notNull(),

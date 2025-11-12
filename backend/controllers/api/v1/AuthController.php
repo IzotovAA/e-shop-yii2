@@ -22,6 +22,7 @@ use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\rest\Controller;
 use yii\web\BadRequestHttpException;
+use yii\web\ErrorAction;
 use yii\web\Request;
 use yii\web\Response;
 
@@ -35,6 +36,9 @@ class AuthController extends Controller
 {
 //    public string $modelClass = 'app\common\models\User';
 
+    private static int $rateLimit = 1;
+    private static int $timePeriod = 10;
+
     public function __construct(
         string                       $id,
         Module                       $module,
@@ -44,6 +48,20 @@ class AuthController extends Controller
     {
         parent::__construct($id, $module, $config);
         $this->setDependency();
+    }
+
+    public static function setRateLimit(int $rateLimit): void
+    {
+        if (YII_ENV_TEST) {
+            self::$rateLimit = $rateLimit;
+        }
+    }
+
+    public static function setTimePeriod(int $timePeriod): void
+    {
+        if (YII_ENV_TEST) {
+            self::$timePeriod = $timePeriod;
+        }
     }
 
     /**
@@ -114,10 +132,10 @@ class AuthController extends Controller
             'rateLimiter' => [
                 'class' => IpRateLimiter::class,
                 // The maximum number of allowed requests
-                'rateLimit' => 5,
+                'rateLimit' => self::$rateLimit,
 
                 // The time period for the rates to apply to
-                'timePeriod' => 60,
+                'timePeriod' => self::$timePeriod,
 
                 // Separate rate limiting for guests and authenticated users
                 // Defaults to true
@@ -140,7 +158,7 @@ class AuthController extends Controller
     {
         return [
             'error' => [
-                'class' => \yii\web\ErrorAction::class,
+                'class' => ErrorAction::class,
             ],
         ];
     }
@@ -162,7 +180,15 @@ class AuthController extends Controller
      */
     public function actionIndex(): Response
     {
-        return $this->asJson(Yii::$app->user->identity);
+        AuthController::setRateLimit(100);
+        AuthController::setTimePeriod(1);
+
+        return $this->asJson([
+            'rateLimit' => self::$rateLimit,
+            'timePeriod' => self::$timePeriod,
+        ]);
+
+//        return $this->asJson(Yii::$app->user->identity);
     }
 
     /**
@@ -198,7 +224,7 @@ class AuthController extends Controller
         $user->save();
         Yii::$app->user->logout();
 
-        return $this->asJson(['message' => 'You are logged out']);
+        return $this->asJson(['message' => 'You are logged out successfully']);
     }
 
     /**
@@ -237,6 +263,7 @@ class AuthController extends Controller
      * @param string $token
      * @return yii\web\Response
      * @throws Exception
+     * @throws BadRequestHttpException
      */
     public function actionVerifyEmail(string $token): Response
     {

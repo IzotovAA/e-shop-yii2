@@ -14,7 +14,7 @@ class m251020_072836_create_discount_table extends Migration
     {
         $this->createTable('{{%discount}}', [
             'id' => $this->primaryKey()->unsigned(),
-            'name' => $this->string()->notNull(),
+            'name' => $this->string()->unique()->notNull(),
             'description' => $this->string(),
             'value' => $this->integer()->unsigned()->notNull(),
             'min_cart_value' => $this->integer()->unsigned()->defaultValue(0),
